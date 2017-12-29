@@ -9,7 +9,9 @@ const mkdirp = require('mkdirp');
 function spawnLog(file, args = [], opts = {}, logFile = null) {
   const cp = childProcess.spawn(file, args, opts);
   if (logFile) {
-    const ws = fs.createWriteStream(logFile);
+    const ws = fs.createWriteStream(logFile, {
+      flags: 'a+',
+    });
     cp.stdout.pipe(ws);
     cp.stderr.pipe(ws, {end: false});
   }
@@ -17,7 +19,9 @@ function spawnLog(file, args = [], opts = {}, logFile = null) {
 }
 function createConsole(logFile) {
   mkdirp.sync(path.dirname(logFile));
-  const ws = fs.createWriteStream(logFile);
+  const ws = fs.createWriteStream(logFile, {
+    flags: 'a+',
+  });
 
   const stdout = new stream.PassThrough();
   stdout.pipe(process.stdout);
