@@ -1,3 +1,4 @@
+const stream = require('stream');
 const path = require('path');
 const fs = require('fs');
 const childProcess = require('child_process');
@@ -17,7 +18,15 @@ function spawnLog(file, args = [], opts = {}, logFile = null) {
 function createConsole(logFile) {
   mkdirp.sync(path.dirname(logFile));
   const ws = fs.createWriteStream(logFile);
-  return new console.Console(ws);
+
+  const stdout = new stream.PassThrough();
+  stdout.pipe(process.stdout);
+  stdout.pipe(ws);
+  const stderr = new stream.PassThrough();
+  stderr.pipe(process.stderr);
+  stderr.pipe(ws, {end: false});
+
+  return new console.Console(stdout, stderr);
 }
 
 module.exports = {
