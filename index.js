@@ -1,7 +1,8 @@
 const fs = require('fs');
 const childProcess = require('child_process');
+const console = require('console');
 
-function spog(file, args = [], opts = {}, logFile = null) {
+function spawnLog(file, args = [], opts = {}, logFile = null) {
   const cp = childProcess.spawn(file, args, opts);
   if (logFile) {
     const ws = fs.createWriteStream(logFile);
@@ -10,15 +11,22 @@ function spog(file, args = [], opts = {}, logFile = null) {
   }
   return cp;
 }
+function createConsole(logFile) {
+  const ws = fs.createWriteStream(logFile);
+  return new console.Console(ws);
+}
 
-module.exports = spog;
+module.exports = {
+  spawnLog,
+  createConsole,
+};
 
 if (require.main === module) {
   if (process.argv.length >= 4) {
     const logFile = process.argv[2];
     const bin = process.argv[3];
     const args = process.argv.slice(4);
-    spog(bin, args, {}, logFile);
+    spawnLog(bin, args, {}, logFile);
   } else {
     console.warn('usage: node index.js [log.txt] [bin] <args>');
     process.exit(1);
