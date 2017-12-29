@@ -1,6 +1,9 @@
+const path = require('path');
 const fs = require('fs');
 const childProcess = require('child_process');
 const console = require('console');
+
+const mkdirp = require('mkdirp');
 
 function spawnLog(file, args = [], opts = {}, logFile = null) {
   const cp = childProcess.spawn(file, args, opts);
@@ -12,6 +15,7 @@ function spawnLog(file, args = [], opts = {}, logFile = null) {
   return cp;
 }
 function createConsole(logFile) {
+  mkdirp.sync(path.dirname(logFile));
   const ws = fs.createWriteStream(logFile);
   return new console.Console(ws);
 }

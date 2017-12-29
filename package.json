@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/modulesio/spog/issues"
   },
-  "homepage": "https://github.com/modulesio/spog#readme"
+  "homepage": "https://github.com/modulesio/spog#readme",
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  }
 }
