@@ -1,6 +1,6 @@
 {
   "name": "spog",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Node spawn and log",
   "main": "index.js",
   "scripts": {
